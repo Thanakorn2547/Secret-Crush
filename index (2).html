@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Crush</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #020111, #191621);
+            color: white;
+            overflow: hidden;
+            position: relative;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .container {
+            width: 80%;
+            max-width: 600px;
+           
+        }
+        .star {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+        }
+        .star:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 1);
+        }
+        .highlighted {
+            transform: scale(3);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(3);
+            z-index: 10;
+        }
+        .dimmed {
+            opacity: 0.2;
+        }
+        .hidden-message {
+            display: none;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #ffcccb;
+        }
+        .close-btn {
+            display: none;
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: red;
+            color: white;
+            border: none;
+            font-size: 20px;
+            padding: 5px 10px;
+            cursor: pointer;
+            z-index: 11;
+            border-radius: 5px;
+        }
+        .heart {
+            position: absolute;
+            font-size: 30px;
+            color: red;
+            animation: floatUp 2s ease-out;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-150px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <button class="close-btn" onclick="resetStars()">✖</button>
+    <button onclick="randomStar()" style="position: fixed; bottom: 20px; right: 20px; padding: 10px; font-size: 16px;">🎲 Random</button>
+    <div class="container" style="font-family: cursive;">
+        
+        <h1>Express Your Feelings <br><br>Through the Stars</h1><br>
+        
+        
+        
+        <div class="star" onclick="highlightStar(this, 'sirius')">⭐ Sirius</div>
+        <div class="star" onclick="highlightStar(this, 'polaris')">🌟 Polaris</div>
+        <div class="star" onclick="highlightStar(this, 'vega')">✨ Vega</div>
+        <div class="star" onclick="highlightStar(this, 'betelgeuse')">💫 Betelgeuse</div>
+        <div class="star" onclick="highlightStar(this, 'antares')">🌠 Antares</div>
+        <div class="star" onclick="highlightStar(this, 'rigel')">🌌 Rigel</div>
+        <div class="star" onclick="highlightStar(this, 'canopus')">🌞 Canopus</div>
+        <div class="star" onclick="highlightStar(this, 'aldebaran')">🌕 Aldebaran</div>
+        <div class="star" onclick="highlightStar(this, 'capella')">✨ Capella</div>
+        <div class="star" onclick="highlightStar(this, 'spica')">🌟 Spica</div>
+        
+        <p id="message" class="hidden-message"></p>
+    </div>
+
+    <script>
+        function highlightStar(element, star) {
+            document.querySelectorAll('.star').forEach(star => {
+                star.classList.remove('highlighted');
+                star.classList.add('dimmed');
+            });
+            element.classList.add('highlighted');
+            element.classList.remove('dimmed');
+            
+            document.querySelector('.close-btn').style.display = 'block';
+
+            let message = document.getElementById('message');
+            let meanings = {
+                'sirius': 'Sirius: You are the only light in my heart.',
+                'polaris': 'Polaris: You are the guiding star of my heart.',
+                'vega': 'Vega: My love for you shines as beautifully as the stars.',
+                'betelgeuse': 'Betelgeuse: My heart warms every time I think of you.',
+                'antares': 'Antares: The love I have for you is passionate and true.',
+                'rigel': 'Rigel: I will always be your strength, no matter what.',
+                'canopus': 'Canopus: My love for you is as steady as an eternal star.',
+                'aldebaran': 'Aldebaran: You are my dream and the goal of my heart.',
+                'capella': 'Capella: I want to protect and take care of you forever.',
+                'spica': 'Spica: I hope we have a bright future together.'
+            };
+            message.textContent = meanings[star];
+            message.style.display = 'block';
+            
+            for (let i = 0; i < 20; i++) {
+                createHeart();
+            }
+        }
+
+        function createHeart() {
+            let heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = '❤️';
+            document.body.appendChild(heart);
+            
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.bottom = '0px';
+            
+            setTimeout(() => { heart.remove(); }, 2000);
+        }
+
+        function resetStars() {
+            document.querySelectorAll('.star').forEach(star => {
+                star.classList.remove('highlighted', 'dimmed');
+            });
+            document.getElementById('message').style.display = 'none';
+            document.querySelector('.close-btn').style.display = 'none';
+        }
+    
+
+        function randomStar() {
+            let stars = document.querySelectorAll('.star');
+            let randomIndex = Math.floor(Math.random() * stars.length);
+            let starNames = ['sirius', 'polaris', 'vega', 'betelgeuse', 'antares', 'rigel', 'canopus', 'aldebaran', 'capella', 'spica'];
+            highlightStar(stars[randomIndex], starNames[randomIndex]);
+        }
+    </script>
+</body>
+</html>
